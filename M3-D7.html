@@ -36,6 +36,7 @@
                 "lat": "-43.9509",
                 "lng": "-34.4618"
               }
+              ["Victor Plains, Suite 879, Wisokyburgh (90566-7771)", "Victor Plains, Suite 879, Wisokyburgh (90566-7771)"] ]
           Should become Victor Plains, Suite 879, Wisokyburgh (90566-7771)
       
       Ex5) Add a button that sorts the list by name ascending / descending (ONE button)
@@ -69,20 +70,16 @@
     </nav>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col">
-          <h3 class>teste</h3>
-          <!-- <!-- <div id="myRef" class="btn-group"> -->
-            <select id="dropdown">
-              <option >name </option>
-              <option>username </option>
-              <option>email </option>
-            </select>
-          </div>
-          <ul id="parentRow" class="list-group">
-            <!-- <li class="list-group-item">An item</li> -->
-          </ul>
-        </div>
+        <select id="dropdown" style="height: 70px; width: 200px">
+          <option>Select one ...</option>
+          <option value="name">Name</option>
+          <option value="username">Username</option>
+          <option value="email">E-mail</option>
+        </select>
       </div>
+      <ul id="ul" class="list-group">
+        <!-- <li class="list-group-item">An item</li> -->
+      </ul>
     </div>
 
     <script
@@ -98,8 +95,8 @@
     <script>
       window.onload = () => {
         fetchUsers()
-        const dropdown = document.getElementById('dropdown')
-        dropdown.addEventListener('change', (event) => {
+        const dropdown = document.getElementById("dropdown")
+        dropdown.addEventListener("change", (event) => {
           fetchUsers(event.target.value)
         })
       }
@@ -107,28 +104,41 @@
 
       // Ex1) Get and display, using async / await, the users
       // from: https://jsonplaceholder.typicode.com/users
-      const fetchUsers = async (option) => { //this is getting fire everytimd the select changes 
-        //option will be different everytime 
+      const fetchUsers = async (option) => {
+        //this is getting fire everytime the select changes
+        //option will be different everytime
         try {
           const fetchUrl = await fetch(url)
           const fetchData = await fetchUrl.json()
           console.log("Result of fetch: ", fetchData)
 
-          const myRef = document.getElementById("parentRow")
-          console.log(option)//this is the same as fetchData[0].name or fetchData[0].email
-          let mappedData = fetchData.map((user) =>  //every time you change the select value, you fetch again
-            //and you map based on the parameter
-            //user[option] //if opption is name => user.name, if option is last_name => user.last_name
-            user[option] //is option is name, it will return an array of names
+          const ul = document.getElementById("ul")
+          console.log(option) //this is the same as fetchData[0].name or fetchData[0].email
+          let mappedData = fetchData.map(
+            (
+              user //every time you change the select value, you fetch again
+            ) =>
+              //and you map based on the parameter
+              //user[option] //if opption is name => user.name, if option is last_name => user.last_name
+              user[option] //if option is name, it will return an array of names
           )
+
+          // let option = title
+          // data.name
+          // data.title
+          // user.option
+          // option will be retrived from the select tag value
+          // fetchData[option]
+          // fetchData[name]
+          // fetchData[email]
+          // fetchData[username]
           console.log("mapping", mappedData)
-          myRef.innerHTML=''
+          ul.innerHTML = ""
           mappedData.forEach((element) => {
             if (option) {
-              myRef.innerHTML += `<li class="list-group-item">
-                ${option}: ${element},
-                   
-                </li>`
+              ul.innerHTML += `<li class="list-group-item">
+                                ${option}: ${element},
+                               </li>`
             }
           })
         } catch (error) {
@@ -136,10 +146,8 @@
         }
       }
 
-      
-
-// username: ${element.username},
-                  // e-mail: ${element.email}
+      // username: ${element.username},
+      // e-mail: ${element.email}
 
       // Ex2) Create a dropdown (<select>) that allows the user to select between
       //name, username and email.
